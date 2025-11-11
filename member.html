@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MAVELIX - LISTMEMBER</title>
+  <link rel="icon" type="image/png" href="https://s.imgz.io/2025/11/12/26E6A358-C83B-441C-98DD-0EA84A4CBBDB-removebg-previewb0678feb900098d6.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing: border-box; }
+    html,body { height:100%; }
+    body {
+      background: url('background.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: silver;
+      font-family: 'Cinzel', serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    
+    body::before {
+      content: "";
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.6);
+      z-index:-1;
+    }
+
+    
+    header {
+      text-align:center;
+      margin-top:40px;
+      margin-bottom: 18px;
+    }
+    header h1 {
+      font-size:44px;
+      color:silver;
+      letter-spacing:8px;
+      text-shadow:0 0 20px rgba(192,192,192,0.9), 0 0 40px rgba(192,192,192,0.7);
+      animation: glowText 2s infinite alternate;
+    }
+    @keyframes glowText {
+      from { text-shadow: 0 0 20px silver, 0 0 40px #aaa; }
+      to { text-shadow: 0 0 40px white, 0 0 80px silver; }
+    }
+
+    
+    .container {
+      width: 100%;
+      display: flex;
+      justify-content:center;
+      padding: 0 20px 60px 20px;
+    }
+
+    .panel {
+      width: 920px;
+      max-width: calc(100% - 40px);
+      background: rgba(0,0,0,0.45);
+      border: 2px solid rgba(192,192,192,0.15);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 0 30px rgba(192,192,192,0.06);
+    }
+
+    
+    .search-row {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+    #search-box {
+      width: 60%;
+      min-width:220px;
+      padding: 12px 14px;
+      font-size:16px;
+      border-radius:10px;
+      border:2px solid silver;
+      background: rgba(255,255,255,0.03);
+      color: silver;
+      font-family: 'Montserrat', sans-serif;
+    }
+    #search-box:focus {
+      outline:none;
+      box-shadow:0 0 18px rgba(192,192,192,0.6);
+    }
+
+   
+    .member-list {
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      gap:12px;
+      padding: 10px 8px;
+      max-height: 540px;
+      overflow: auto;
+    }
+
+    
+    .member-card {
+      position: relative;
+      background: rgba(0,0,0,0.6);
+      border: 2px solid silver;
+      border-left: 6px solid rgba(255,255,255,0.9);
+      border-radius: 10px;
+      padding: 12px 14px;
+      width: 640px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: default;
+      box-shadow: 0 0 10px rgba(192,192,192,0.12);
+      overflow: hidden;
+    }
+
+    .member-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 60px silver;
+    }
+
+   
+    .member-card::before {
+      content:"";
+      position:absolute;
+      top:-50%; left:-50%;
+      width:200%; height:200%;
+      background: linear-gradient(90deg, transparent, rgba(90,90,90,0.3), transparent, silver, transparent);
+      background-size:200% 200%;
+      z-index:0;
+      opacity:0;
+      transition: opacity 0.25s;
+    }
+    .member-card:hover::before {
+      opacity:1;
+      animation: glowBorder 2s linear infinite;
+    }
+    @keyframes glowBorder {
+      0%{ background-position:0% 50% }
+      50%{ background-position:100% 50% }
+      100%{ background-position:0% 50% }
+    }
+
+    .member-info {
+      display:flex;
+      align-items:center;
+      gap:14px;
+      z-index:1;
+    }
+
+    .member-avatar {
+      width:56px; height:56px;
+      border-radius:50%;
+      border:2px solid silver;
+      background:linear-gradient(180deg,#222,#111);
+      display:flex; align-items:center; justify-content:center;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      font-size:14px;
+    }
+
+    .member-info div {
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .member-info .name {
+      font-weight:700;
+      color: #fff;
+      font-size:16px;
+      letter-spacing:0.6px;
+    }
+    .member-info .role {
+      font-size:12px;
+      color:#bfbfbf;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .member-facebook {
+      width:44px;
+      height:38px;
+      background: rgba(255,255,255,0.08);
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color: silver;
+      text-decoration:none;
+      border:2px solid rgba(255,255,255,0.06);
+      z-index:1;
+      transition: all 0.22s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .member-facebook:hover {
+      background: #ffffff;
+      color:#000;
+      transform: scale(1.04);
+      box-shadow: 0 6px 20px rgba(255,255,255,0.08);
+    }
+
+    /* ===== Pagination ===== */
+    .pagination {
+      margin-top: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+    .btn-page {
+      padding:8px 14px;
+      background: rgba(255,255,255,0.08);
+      color: silver;
+      border: 2px solid rgba(255,255,255,0.06);
+      border-radius:8px;
+      cursor:pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.18s;
+    }
+    .btn-page:hover { background: #ffffff; color:#000; }
+
+    /* ===== Music player slide (from right) ===== */
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      right: -240px;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid silver;
+      padding: 12px 16px;
+      border-radius: 15px 0 0 15px;
+      box-shadow: 0 0 20px silver;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      transition: right 0.4s ease;
+      z-index:1000;
+    }
+    .music-player:hover { right: 0; }
+    .music-player button {
+      background:none;
+      border:2px solid silver;
+      color:silver;
+      padding:8px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:16px;
+      transition: all 0.2s, transform 0.15s;
+    }
+    .music-player button:hover {
+      background:silver; color:black; transform: scale(1.06);
+    }
+    .music-player input[type=range] { accent-color: silver; width:120px; }
+
+    /* ===== Firefly particles ===== */
+    .firefly {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, rgba(255,255,200,1) 0%, rgba(255,255,200,0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+      animation: floatUp linear forwards;
+      z-index: 500;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.5); opacity:1; }
+      100% { transform: translateY(-300px) scale(1.2); opacity:0; }
+    }
+
+    /* ===== Home floating button ===== */
+    #backHome {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.08);
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      color: silver;
+      font-size:16px;
+      opacity: 0.22;
+      transition: all 0.22s;
+      z-index:1000;
+      border:2px solid rgba(255,255,255,0.06);
+    }
+    #backHome:hover { opacity:1; background: rgba(255,255,255,0.24); color:white; transform: scale(1.04); }
+
+    /* ===== Responsive ===== */
+    @media (max-width:760px){
+      .member-card { width: 100%; padding:10px; }
+      #search-box { width: 100%; }
+      .panel { padding:16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" id="backHome" title="กลับหน้า Home">HOME</a>
+
+  <header>
+    <h1>MAVELIX NAMELIST</h1>
+  </header>
+
+  <div class="container">
+    <div class="panel">
+      <div class="search-row">
+        <input id="search-box" type="text" placeholder="ค้นหาชื่อสมาชิก..." oninput="filterMembers()" />
+      </div>
+
+      <div class="member-list" id="memberList">
+        <!-- Converted member entries from your list (ใช้ตัวอย่างเดิมทั้งหมด) -->
+        <!-- Each card contains name and Facebook button (opens new tab) -->
+        <!-- You can replace avatar content / add real images by editing .member-avatar -->
+        
+        <div class="member-card"><div class="member-info"><div class="member-avatar">JA</div><div><span class="name">Jaypark Lyfestyle</span><span class="role">MANAGER WEBSITE</span></div></div><a class="member-facebook" href="https://www.facebook.com/jubjubjubjubjubjubjubjubjubjub" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">TH</div><div><span class="name">Theboss Lyfestyle</span><span class="role">MANAGER WEBSITE</span></div></div><a class="member-facebook" href="https://www.facebook.com/mon.winterfell" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">NE</div><div><span class="name">Neon Mavelix</span><span class="role">OWNER</span></div></div><a class="member-facebook" href="https://www.facebook.com/neon.mavelix" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">AI</div><div><span class="name">Aileen Bluemobb</span><span class="role">FOUNDER</span></div></div><a class="member-facebook" href="https://www.facebook.com/mismyzheartz" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">JE</div><div><span class="name">Jeffy Mavelix</span><span class="role">FOUNDER</span></div></div><a class="member-facebook" href="https://www.facebook.com/jeffy.phawha" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">JA</div><div><span class="name">Jayhigh Phawha</span><span class="role">FOUNDER</span></div></div><a class="member-facebook" href="https://www.facebook.com/jayhigh.phawhabestoftoxicboys" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">SS</div><div><span class="name">Black Mavelix</span><span class="role">FOUNDER</span></div></div><a class="member-facebook" href="https://www.facebook.com/blackmavelix.i" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">DA</div><div><span class="name">Darwin Mavelix</span><span class="role">FOUNDER</span></div></div><a class="member-facebook" href="https://www.facebook.com/darwin.mavelix#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">BJ</div><div><span class="name">Bjorn Mavelix</span><span class="role">FOUNDER</span></div></div><a class="member-facebook" href="https://www.facebook.com/bjorn.baratheon#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">ER</div><div><span class="name">Erxn Mavelix</span><span class="role">FOUNDER</span></div></div><a class="member-facebook" href="https://www.facebook.com/erxn.mavelix#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">NE</div><div><span class="name">Ner Mavelix</span><span class="role">FOUNDER</span></div></div><a class="member-facebook" href="https://www.facebook.com/oeivwprr.owipwjcd#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">CA</div><div><span class="name">Carlyn Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/carlyn.phawhabestoftoxicboy#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">CO</div><div><span class="name">Coke Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/coke.phawha#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">DE</div><div><span class="name">Dexzy Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/duck.mavelix#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">FR</div><div><span class="name">Frame Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/frame.mahatsajxn#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">FR</div><div><span class="name">Fran Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/myflowmavelix.i#"_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">HI</div><div><span class="name">Highfour Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/HighfourLeveup#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">HI</div><div><span class="name">HighTong Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/moss.babi.1#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">IN</div><div><span class="name">Intro Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/intro.mavelix#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">JA</div><div><span class="name">Jayce Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/jayce.justurndxwn#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">JA</div><div><span class="name">Jayr Legendmavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/jayr.winterfell#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">JE</div><div><span class="name">Jedii Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/jedii.watdaimot#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">JE</div><div><span class="name">Jerd Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/profile.php?id=61579808576231#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">LE</div><div><span class="name">Leeon Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/leonn.miller.2025#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">LI</div><div><span class="name">Liptun Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/liptun.mavelix#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">ME</div><div><span class="name">Merry Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/profile.php?id=61581436311729#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">MI</div><div><span class="name">Mineprïnt Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/mineprint.mavelix#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">NE</div><div><span class="name">Ner Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/oeivwprr.owipwjcd#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">NE</div><div><span class="name">Nersq Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/shysaysshelovee#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">NO</div><div><span class="name">Nongest Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/Estacehm#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">NO</div><div><span class="name">Nonghope Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/HHopeDB#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">NO</div><div><span class="name">Nonglukpeach Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/lukpeach.mavelix#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">NO</div><div><span class="name">Nongpoom Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/zuna.daylynx#" target="_blank">FB</a></div>
+        
+        <div class="member-card"><div class="member-info"><div class="member-avatar">NO</div><div><span class="name">Nongqq Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/nedsly.2024#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">PA</div><div><span class="name">Pao Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/profile.php?id=61580774651916#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">SA</div><div><span class="name">Santa Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/pad.du.pad.ebeb.mich.khn#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">SH</div><div><span class="name">Shin Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/shin.phawha#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">SW</div><div><span class="name">Sweeteggs Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/sweeteggs.mavelix#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">TY</div><div><span class="name">Typhoon Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/typhoon.jtdstyle#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">WA</div><div><span class="name">Wadup Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/edgxr.mavelix#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">WH</div><div><span class="name">Why Mavelix</span><span class="role">MEMBER</span></div></div><a class="member-facebook" href="https://www.facebook.com/why.phawha#" target="_blank">FB</a></div>
+      </div>
+
+      <div class="pagination">
+        <button class="btn-page" id="prevBtn" onclick="prevPage()">◀</button>
+        <span id="pageInfo">Page 1</span>
+        <button class="btn-page" id="nextBtn" onclick="nextPage()">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Music Player -->
+  <div class="music-player" id="musicPlayer">
+    <button onclick="togglePlay()">▶</button>
+    <audio id="audio" src="yourmusic.mp3" preload="auto"></audio>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" oninput="changeVolume(this.value)">
+  </div>
+
+  <script>
+    /* === Fireflies === */
+    function spawnFirefly(){
+      const f=document.createElement('div');
+      f.className='firefly';
+      f.style.left=Math.random()*window.innerWidth+'px';
+      f.style.bottom='0px';
+      f.style.animationDuration=(3+Math.random()*3)+'s';
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(),5000);
+    }
+    setInterval(spawnFirefly,500);
+
+    /* === Pagination + Search === */
+    const members=document.querySelectorAll('.member-card');
+    const perPage=6;
+    let currentPage=1;
+
+    function showPage(page){
+      const start=(page-1)*perPage;
+      const end=start+perPage;
+      members.forEach((m,i)=>{m.style.display=(i>=start&&i<end)?'flex':'none';});
+      document.getElementById('pageInfo').textContent='Page '+page;
+      document.getElementById('prevBtn').disabled=page===1;
+      document.getElementById('nextBtn').disabled=end>=members.length;
+    }
+    showPage(1);
+
+    function nextPage(){ if(currentPage*perPage<members.length){currentPage++;showPage(currentPage);} }
+    function prevPage(){ if(currentPage>1){currentPage--;showPage(currentPage);} }
+
+    function filterMembers(){
+      const val=document.getElementById('search-box').value.toLowerCase();
+      members.forEach(m=>{
+        const name=m.querySelector('.name').textContent.toLowerCase();
+        m.style.display=name.includes(val)?'flex':'none';
+      });
+    }
+
+    /* === Music Player === */
+    const audio=document.getElementById('audio');
+    function togglePlay(){
+      if(audio.paused){audio.play();}else{audio.pause();}
+    }
+    function changeVolume(v){ audio.volume=v; }
+
+    /* === Block DevTools / RightClick === */
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = function(e){
+      if(e.keyCode==123|| (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && e.key==='U')) return false;
+    };
+  </script>
+</body>
+</html>
+

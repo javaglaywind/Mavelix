@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="https://s.imgz.io/2025/11/12/26E6A358-C83B-441C-98DD-0EA84A4CBBDB-removebg-previewb0678feb900098d6.png" />
+  <title>MAVELIX - HOME</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: url('background.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: silver;
+      font-family: 'Cinzel', serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    header h1 {
+      font-size: 60px;
+      color: silver;
+      letter-spacing: 10px;
+      text-shadow: 0 0 20px rgba(192,192,192,0.9), 0 0 40px rgba(192,192,192,0.7);
+      animation: glowText 2s infinite alternate;
+    }
+
+    @keyframes glowText {
+      from { text-shadow: 0 0 20px silver, 0 0 40px #aaa; }
+      to { text-shadow: 0 0 40px white, 0 0 80px silver; }
+    }
+
+      .categories {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 0;
+  }
+
+  .categories {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 300px 0 40px 0;
+  }
+
+  .center-button {
+    text-align: center;
+  }
+
+  .btn-member {
+    display: inline-block;
+    padding: 20px 60px;
+    font-size: 28px;
+    color: silver;
+    text-decoration: none;
+    border: 3px solid silver;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    text-shadow: 0 0 15px white;
+    box-shadow: 0 0 30px silver;
+    transition: all 0.3s ease;
+  }
+
+  .btn-member:hover {
+    background: silver;
+    color: black;
+    box-shadow: 0 0 50px white, 0 0 100px silver;
+    transform: scale(1.1);
+  }
+  .supervised {
+    text-align: center;
+    margin: 310px auto 30px auto;
+  }
+
+  .supervised h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px silver, 0 0 30px white;
+  }
+
+  .supervised ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .supervised li {
+    font-size: 20px;
+    margin: 10px 0;
+    transition: transform 0.2s;
+  }
+
+  .supervised li:hover {
+    transform: scale(1.1);
+    color: white;
+    text-shadow: 0 0 10px silver;
+  }
+
+ .music-player {
+    position: fixed;
+    bottom: 20px;
+    right: -220px; 
+    background: rgba(255,255,255,0.08);
+    border: 2px solid silver;
+    padding: 15px 20px;
+    border-radius: 15px 0 0 15px;
+    box-shadow: 0 0 20px silver;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: right 0.4s ease; 
+  }
+
+  .music-player:hover {
+    right: 0;
+  }
+
+  .music-player button {
+    background: none;
+    border: 2px solid silver;
+    color: silver;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s, transform 0.2s;
+  }
+
+  .music-player button:hover {
+    background: silver;
+    color: black;
+    box-shadow: 0 0 20px white;
+    transform: scale(1.1);
+  }
+
+  .music-player input[type=range] {
+    accent-color: silver;
+  }
+
+  /* ไฟลอยขึ้น */
+  .firefly {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, rgba(255,255,200,1) 0%, rgba(255,255,200,0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    animation: floatUp linear forwards;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(0) scale(0.5);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-300px) scale(1.2);
+      opacity: 0;
+    }
+  }
+
+</style>
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MAVELIX NAMELIST</h1>
+  </header>
+
+<section class="categories">
+  <div class="center-button">
+    <a href="member.html" class="btn-member">CHECK MEMBER</a>
+  </div>
+</section>
+
+  <section class="supervised">
+    <h2>PARTNER</h2>
+    <ul>
+      <li>PHAWHA X FEELSORTAHUMAN</li>
+    </ul>
+  </section>
+
+    <section class="supervised">
+    <h2></h2>
+    <ul>
+      <li>Designed by Lyfestyle3004 | Powered by Jaypark & Mon | © 2025</li>
+    </ul>
+  </section>
+
+<div class="music-player">
+  <button id="playPause">▶</button>
+  <input type="range" id="volume" min="0" max="1" step="0.01">
+  <audio id="audio" src="music.mp3"></audio>
+</div>
+
+  <script>
+  const audio = document.getElementById("audio");
+    const playPause = document.getElementById("playPause");
+    const volume = document.getElementById("volume");
+
+    audio.volume = 0.5;
+    volume.value = 0.5;
+
+    playPause.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        playPause.textContent = "⏸";
+      } else {
+        audio.pause();
+        playPause.textContent = "▶";
+      }
+    });
+
+    volume.addEventListener("input", () => {
+      audio.volume = volume.value;
+    });
+
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "F12") {
+      e.preventDefault();
+      alert("การเข้าถึง Developer Tools ถูกปิดใช้งาน!");
+    }
+
+    if (e.ctrlKey && e.shiftKey && e.key === "I") {
+      e.preventDefault();
+      alert("การเข้าถึง Developer Tools ถูกปิดใช้งาน!");
+    }
+
+    if (e.ctrlKey && e.shiftKey && e.key === "C") {
+      e.preventDefault();
+      alert("การเข้าถึง Developer Tools ถูกปิดใช้งาน!");
+    }
+
+    if (e.ctrlKey && e.key === "u") {
+      e.preventDefault();
+      alert("การเข้าถึง Source Code ถูกปิดใช้งาน!");
+    }
+  });
+
+
+  document.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+    alert("ห้ามใช้คลิกขวา!");
+  });
+
+// สร้างไฟลอยขึ้นอัตโนมัติ
+function createFirefly() {
+  const firefly = document.createElement('span');
+  firefly.classList.add('firefly');
+  firefly.style.left = Math.random() * window.innerWidth + 'px';
+  firefly.style.top = Math.random() * window.innerHeight + 'px';
+  firefly.style.width = (5 + Math.random() * 10) + 'px';
+  firefly.style.height = firefly.style.width;
+  firefly.style.animationDuration = (3 + Math.random() * 3) + 's';
+  document.body.appendChild(firefly);
+
+  setTimeout(() => {
+    firefly.remove();
+  }, parseFloat(firefly.style.animationDuration) * 1000);
+}
+
+// สร้างไฟทุก 300ms
+setInterval(createFirefly, 300);
+
+  </script>
+
+</body>
+</html>
